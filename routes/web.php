@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('messages', [ContactMessageController::class, 'index'])->name('messages.index');
         Route::get('messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('messages.show');
         Route::delete('messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');
+
+        // Account Settings
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('settings/information', [SettingController::class, 'updateInformation'])->name('settings.update-information');
+        Route::put('settings/password', [SettingController::class, 'updatePassword'])->name('settings.update-password');
     });
 });
 

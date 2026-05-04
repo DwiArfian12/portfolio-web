@@ -187,6 +187,11 @@
             <hr class="border-secondary">
             <ul class="nav flex-column mb-3">
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt"></i> View Site
                     </a>
@@ -212,6 +217,9 @@
             <h5 class="mb-0 ms-2">@yield('title', 'Dashboard')</h5>
         </div>
         <div>
+            <a href="{{ route('admin.settings.index') }}" class="text-decoration-none text-dark me-3" title="Settings">
+                <i class="fas fa-cog"></i>
+            </a>
             <span><i class="fas fa-user-circle me-1"></i>{{ Auth::user()->name }}</span>
         </div>
     </nav>
@@ -263,19 +271,15 @@
                     sidebar.toggleClass('collapsed');
                     navbarTop.toggleClass('sidebar-collapsed');
                     mainContent.toggleClass('sidebar-collapsed');
-
-                    // Save state
                     localStorage.setItem('sidebarCollapsed', sidebar.hasClass('collapsed'));
                 }
             });
 
-            // Close sidebar on overlay click (mobile)
             overlay.on('click', function() {
                 sidebar.removeClass('mobile-open');
                 overlay.removeClass('active');
             });
 
-            // Handle window resize
             $(window).on('resize', function() {
                 if (window.innerWidth > 768) {
                     overlay.removeClass('active');
