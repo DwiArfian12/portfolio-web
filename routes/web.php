@@ -26,6 +26,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Contact form submission
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+// Captcha refresh
+Route::get('/captcha/refresh', [HomeController::class, 'refreshCaptcha'])->name('captcha.refresh');
+
 // Tools
 Route::prefix('tools')->name('tools.')->group(function () {
     // Text converter

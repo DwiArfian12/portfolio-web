@@ -278,6 +278,19 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
+                                <!-- Captcha -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="captcha" style="font-weight: 600; color: #666;">
+                                            <span id="captchaQuestion">{{ $captcha['question'] ?? '' }}</span>
+                                            <button type="button" id="refreshCaptcha" style="background: none; border: none; color: #6c63ff; cursor: pointer; font-size: 14px; margin-left: 8px;">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </button>
+                                        </label>
+                                        <input class="form-control" id="captcha" name="captcha" placeholder="Your Answer" required />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
                                 <div class="col-lg-12 text-center">
                                     <div id="success"></div>
                                     <button id="sendMessageButton" class="sim-btn btn-hover-new" data-text="Send Message" type="submit">Send Message</button>
@@ -302,7 +315,7 @@
                         @if($profile && $profile->youtube)<a href="{{ $profile->youtube }}">YouTube</a>@endif
                         @if($profile && $profile->github)<a href="{{ $profile->github }}">Github</a>@endif
                     </p>
-                    <p class="footer-company-name">All Rights Reserved. <a href="#">Dwi Arfian</a>&copy; 2024</p>
+                    <p class="footer-company-name">All Rights Reserved. <a href="#">Dwi Arfian</a> &copy; 2026</p>
                 </div>
             </div>
         </div>
@@ -341,14 +354,25 @@
                     'X-Requested-With': 'XMLHttpRequest',
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast(data.message, 'success');
-                    form.reset();
-                } else {
-                    showToast('Failed to send message. Please try again.', 'error');
+            .then(response => {
+                if (!response.ok && response.status === 422) {
+                    return response.json().then(data => {
+                        // Refresh captcha on error
+                        if (data.refresh_captcha) {
+                            refreshCaptchaQuestion();
+                        }
+                        showToast(data.message || 'Captcha verification failed.', 'error');
+                    });
                 }
+                return response.json().then(data => {
+                    if (data.success) {
+                        showToast(data.message, 'success');
+                        form.reset();
+                        refreshCaptchaQuestion();
+                    } else {
+                        showToast('Failed to send message. Please try again.', 'error');
+                    }
+                });
             })
             .catch(error => {
                 showToast('An error occurred. Please try again.', 'error');
@@ -357,6 +381,29 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Send Message';
             });
+        });
+
+        // Refresh captcha via AJAX
+        function refreshCaptchaQuestion() {
+            fetch('{{ route("captcha.refresh") }}', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('captchaQuestion').textContent = data.question;
+                document.getElementById('captcha').value = '';
+            })
+            .catch(error => {
+                console.error('Failed to refresh captcha:', error);
+            });
+        }
+
+        // Refresh captcha on button click
+        document.getElementById('refreshCaptcha').addEventListener('click', function(e) {
+            e.preventDefault();
+            refreshCaptchaQuestion();
         });
 
         function showToast(message, type) {
