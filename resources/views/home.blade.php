@@ -33,6 +33,27 @@
         }
         .toast-message.success { background: #28a745; }
         .toast-message.error { background: #dc3545; }
+        .navbar .dropdown-menu {
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 8px;
+        }
+        .navbar .dropdown-item {
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .navbar .dropdown-item:hover {
+            background: linear-gradient(135deg, #6c63ff, #4834d4);
+            color: #fff;
+        }
+        .navbar .nav-link.dropdown-toggle {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -60,6 +81,12 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Gallery</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#blog">Projects</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact Me</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tools</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="toolsDropdown">
+                            <a class="dropdown-item" href="{{ route('tools.convert-text.index') }}">Convert Text</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

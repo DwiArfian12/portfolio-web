@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\TextController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Contact form submission
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Text converter tool
+Route::prefix('tools')->name('tools.')->group(function () {
+    Route::get('/convert-text', [TextController::class, 'index'])->name('convert-text.index');
+    Route::post('/convert-text', [TextController::class, 'convert'])->name('convert-text.convert');
+});
 
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
