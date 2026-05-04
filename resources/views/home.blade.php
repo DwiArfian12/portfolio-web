@@ -85,6 +85,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tools</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="toolsDropdown">
                             <a class="dropdown-item" href="{{ route('tools.convert-text.index') }}">Convert Text</a>
+                            <a class="dropdown-item" href="{{ route('tools.compress-pdf.index') }}">Compress PDF</a>
                         </div>
                     </li>
                 </ul>
